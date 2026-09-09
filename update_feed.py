@@ -4,7 +4,8 @@ from urllib.request import urlopen, Request
 from xml.etree import ElementTree as ET
 
 FEEDS = {
-    # Original sources (kept)
+FEEDS = {
+    # Original sources
     "Fars News": "https://www.farsnews.ir/rss",
     "IRNA": "https://www.irna.ir/rss",
     "Tasnim": "https://www.tasnimnews.com/fa/rss",
@@ -13,13 +14,19 @@ FEEDS = {
     "AP World": "https://rsshub.app/apnews/topics/world-news",
     "USGS Middle East": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
     
-    # NEW: Iranian state media English editions
+    # Iranian state media English editions
     "Fars News English": "https://en.farsnews.ir/rss",
     "Tasnim English": "https://www.tasnimnews.ir/en/rss",
     "Mehr News English": "https://en.mehrnews.com/rss",
     
-    # NEW: Regional/Gulf outlet
+    # Regional/Gulf outlet
     "Al Arabiya English": "https://english.alarabiya.net/rss",
+    
+    # Twitter/X OSINT feeds via keep.md
+    "IntelCrab Twitter": "https://keep.md/api/x-rss/IntelCrab.xml?content=posts",
+    "OSINTdefender Twitter": "https://keep.md/api/x-rss/OSINTdefender.xml?content=posts",
+    "War_Mapper Twitter": "https://keep.md/api/x-rss/War_Mapper.xml?content=posts",
+    "UKMTO Twitter": "https://keep.md/api/x-rss/UKMTO.xml?content=posts",
 }
 
 def fetch_rss(url):
