@@ -15,31 +15,39 @@ FEEDS = {
     "BBC Middle East": "https://feeds.bbci.co.uk/news/world/middle_east/rss.xml",
     "Anadolu Agency": "https://www.aa.com.tr/en/rss/default?cat=live",
     "AP World": "https://rsshub.app/apnews/topics/world-news",
+    "Iran International": "https://www.iranintl.com/en/rss",
+    
+    # Maritime / military
+    "gCaptain Maritime": "https://feeds.feedburner.com/gcaptain",
     
     # Seismic for missile impact detection
     "USGS Middle East": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
     
-    # Twitter/X OSINT feeds (active accounts only)
-    "PedenTheGreat Twitter": "https://keep.md/api/x-rss/PedenTheGreat.xml?content=posts",
+    # Twitter/X OSINT feeds via keep.md (active accounts only)
     "OSINTdefender Twitter": "https://keep.md/api/x-rss/OSINTdefender.xml?content=posts",
     "UKMTO Twitter": "https://keep.md/api/x-rss/UKMTO.xml?content=posts",
+    "IranIntl Twitter": "https://keep.md/api/x-rss/IranIntl.xml?content=posts",
+    "Netblocks Twitter": "https://keep.md/api/x-rss/netblocks.xml?content=posts",
 }
 
-# Keywords that indicate relevance to the Iran war
 # Stories must contain at least one of these to be included
 WAR_KEYWORDS = [
-    "iran", "hormuz", "strait", "gulf", "missile", "strike", "attack", 
+    "iran", "hormuz", "strait", "gulf", "missile", "strike", "strikes",
     "tanker", "base", "war", "military", "drone", "casualt", "intercept", 
-    "blockade", "brent", "oil", "sanction", "deal", "ceasefire", "escalat", 
+    "blockade", "brent", "oil", "sanction", "ceasefire", "escalat", 
     "retaliat", "irgc", "centcom", "jordan", "kuwait", "bahrain", "uae", 
     "saudi", "yemen", "houthi", "ansar", "israel", "gaza", "lebanon", 
     "hezbollah", "syria", "iraq", "trump", "khamenei", "nuclear", "iaea", 
     "refiner", "diesel", "gasoline", "spr", "patriot", "interceptor", 
     "ballistic", "carrier", "naval", "mines", "bombing", "embassy", 
-    "mediation", "negotiation", "talks", "statement", "embargo", "trade", 
-    "cargo", "port", "pipeline", "facility", "reserve", "supply", "demand", 
-    "capacity", "margin", "crack", "spread", "futures", "spot", "market", 
-    "trading", "spike", "plunge", "surge", "panic", "contagion"
+    "mediation", "negotiation", "talks", "embargo", 
+    "cargo", "port", "pipeline", "facility", "reserve", 
+    "crack", "spread", "futures", "spot", 
+    "spike", "plunge", "surge", "panic", "contagion",
+    "destroyer", "submarine", "warship", "fleet", "sortie", "bomb", "ordnance",
+    "wounded", "killed", "dead", "evacuation", "intercepted", "downed", "captured", "seized",
+    "supertanker", "vlcc", "crude", "petroleum", "distillate", "bunker", "fuel oil",
+    "enrichment", "centrifuge", "wedding", "mosque", "civilian", "children", "school", "hospital"
 ]
 
 def fetch_rss(url):
@@ -63,7 +71,6 @@ def parse_rss(xml_bytes, source, max_items=8):
             link = item.findtext("link", default="")
             if not title:
                 continue
-            # KEYWORD FILTER: only include if title or description contains a keyword
             combined = (title + " " + desc).lower()
             if not any(kw in combined for kw in WAR_KEYWORDS):
                 continue
