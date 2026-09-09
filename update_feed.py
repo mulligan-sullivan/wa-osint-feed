@@ -4,6 +4,7 @@ from urllib.request import urlopen, Request
 from xml.etree import ElementTree as ET
 
 FEEDS = {
+    # Original sources (kept)
     "Fars News": "https://www.farsnews.ir/rss",
     "IRNA": "https://www.irna.ir/rss",
     "Tasnim": "https://www.tasnimnews.com/fa/rss",
@@ -11,6 +12,14 @@ FEEDS = {
     "Anadolu Agency": "https://www.aa.com.tr/en/rss/default?cat=live",
     "AP World": "https://rsshub.app/apnews/topics/world-news",
     "USGS Middle East": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
+    
+    # NEW: Iranian state media English editions
+    "Fars News English": "https://en.farsnews.ir/rss",
+    "Tasnim English": "https://www.tasnimnews.ir/en/rss",
+    "Mehr News English": "https://en.mehrnews.com/rss",
+    
+    # NEW: Regional/Gulf outlet
+    "Al Arabiya English": "https://english.alarabiya.net/rss",
 }
 
 def fetch_rss(url):
