@@ -4,29 +4,43 @@ from urllib.request import urlopen, Request
 from xml.etree import ElementTree as ET
 
 FEEDS = {
-    # Original sources
-    "Fars News": "https://www.farsnews.ir/rss",
-    "IRNA": "https://www.irna.ir/rss",
-    "Tasnim": "https://www.tasnimnews.com/fa/rss",
-    "Al Jazeera": "https://www.aljazeera.com/xml/rss/all.xml",
-    "Anadolu Agency": "https://www.aa.com.tr/en/rss/default?cat=live",
-    "AP World": "https://rsshub.app/apnews/topics/world-news",
-    "USGS Middle East": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
-    
-    # Iranian state media English editions
+    # Iranian state media (English only)
     "Fars News English": "https://en.farsnews.ir/rss",
     "Tasnim English": "https://www.tasnimnews.ir/en/rss",
     "Mehr News English": "https://en.mehrnews.com/rss",
     
-    # Regional/Gulf outlet
+    # Regional outlets
+    "Al Jazeera": "https://www.aljazeera.com/xml/rss/all.xml",
     "Al Arabiya English": "https://english.alarabiya.net/rss",
+    "BBC Middle East": "https://feeds.bbci.co.uk/news/world/middle_east/rss.xml",
+    "Anadolu Agency": "https://www.aa.com.tr/en/rss/default?cat=live",
+    "AP World": "https://rsshub.app/apnews/topics/world-news",
     
-    # Twitter/X OSINT feeds via keep.md
-    "IntelCrab Twitter": "https://keep.md/api/x-rss/IntelCrab.xml?content=posts",
+    # Seismic for missile impact detection
+    "USGS Middle East": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
+    
+    # Twitter/X OSINT feeds (active accounts only)
+    "PedenTheGreat Twitter": "https://keep.md/api/x-rss/PedenTheGreat.xml?content=posts",
     "OSINTdefender Twitter": "https://keep.md/api/x-rss/OSINTdefender.xml?content=posts",
-    "War_Mapper Twitter": "https://keep.md/api/x-rss/War_Mapper.xml?content=posts",
     "UKMTO Twitter": "https://keep.md/api/x-rss/UKMTO.xml?content=posts",
 }
+
+# Keywords that indicate relevance to the Iran war
+# Stories must contain at least one of these to be included
+WAR_KEYWORDS = [
+    "iran", "hormuz", "strait", "gulf", "missile", "strike", "attack", 
+    "tanker", "base", "war", "military", "drone", "casualt", "intercept", 
+    "blockade", "brent", "oil", "sanction", "deal", "ceasefire", "escalat", 
+    "retaliat", "irgc", "centcom", "jordan", "kuwait", "bahrain", "uae", 
+    "saudi", "yemen", "houthi", "ansar", "israel", "gaza", "lebanon", 
+    "hezbollah", "syria", "iraq", "trump", "khamenei", "nuclear", "iaea", 
+    "refiner", "diesel", "gasoline", "spr", "patriot", "interceptor", 
+    "ballistic", "carrier", "naval", "mines", "bombing", "embassy", 
+    "mediation", "negotiation", "talks", "statement", "embargo", "trade", 
+    "cargo", "port", "pipeline", "facility", "reserve", "supply", "demand", 
+    "capacity", "margin", "crack", "spread", "futures", "spot", "market", 
+    "trading", "spike", "plunge", "surge", "panic", "contagion"
+]
 
 def fetch_rss(url):
     try:
@@ -47,14 +61,19 @@ def parse_rss(xml_bytes, source, max_items=8):
             desc = item.findtext("description", default="")
             pub = item.findtext("pubDate", default="")
             link = item.findtext("link", default="")
-            if title:
-                items.append({
-                    "source": source,
-                    "time": pub or datetime.now(timezone.utc).isoformat(),
-                    "title": html.escape(title),
-                    "text": html.escape(re.sub(r"<[^>]+>", "", desc))[:400],
-                    "link": link or ""
-                })
+            if not title:
+                continue
+            # KEYWORD FILTER: only include if title or description contains a keyword
+            combined = (title + " " + desc).lower()
+            if not any(kw in combined for kw in WAR_KEYWORDS):
+                continue
+            items.append({
+                "source": source,
+                "time": pub or datetime.now(timezone.utc).isoformat(),
+                "title": html.escape(title),
+                "text": html.escape(re.sub(r"<[^>]+>", "", desc))[:400],
+                "link": link or ""
+            })
             if len(items) >= max_items:
                 break
     except Exception:
@@ -92,7 +111,7 @@ def build_html(entries):
         "<style>body{font-family:monospace;max-width:900px;margin:20px auto;padding:10px;background:#111;color:#eee}h1{color:#0f0}h2{color:#ff0;border-bottom:1px solid #444;padding-bottom:4px}.entry{margin:10px 0;padding:10px;background:#222;border-left:4px solid #0f0}.meta{color:#888;font-size:0.85em}.src{color:#0ff;font-weight:bold}</style>",
         "</head><body>",
         f"<h1>OSINT Feed - {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}</h1>",
-        "<p>Updates daily. Auto-refresh every 5 minutes.</p>",
+        "<p>Updates every 6 hours. Auto-refresh every 5 minutes.</p>",
         "<h2>Latest Entries</h2>",
     ]
     for e in entries[:60]:
@@ -123,4 +142,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-  
