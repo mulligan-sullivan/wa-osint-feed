@@ -17,17 +17,24 @@ FEEDS = {
     "AP World": "https://rsshub.app/apnews/topics/world-news",
     "Iran International": "https://www.iranintl.com/en/rss",
     
-    # Maritime / military
+    # Maritime / military / tanker tracking
     "gCaptain Maritime": "https://feeds.feedburner.com/gcaptain",
+    "USNI News": "https://news.usni.org/feed",
+    "Defence Blog Maritime": "https://defence-blog.com/category/navy/feed",
+    "World Maritime News": "https://feeds.feedburner.com/worldmaritimenews",
     
     # Seismic for missile impact detection
     "USGS Middle East": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
     
-    # Twitter/X OSINT feeds via keep.md (active accounts only)
+    # Twitter/X OSINT feeds via keep.md
     "OSINTdefender Twitter": "https://keep.md/api/x-rss/OSINTdefender.xml?content=posts",
     "UKMTO Twitter": "https://keep.md/api/x-rss/UKMTO.xml?content=posts",
     "IranIntl Twitter": "https://keep.md/api/x-rss/IranIntl.xml?content=posts",
     "Netblocks Twitter": "https://keep.md/api/x-rss/netblocks.xml?content=posts",
+    "Hormuz Letter Twitter": "https://keep.md/api/x-rss/HormuzLetter.xml?content=posts",
+    "TankerTrackers Twitter": "https://keep.md/api/x-rss/TankerTrackers.xml?content=posts",
+    "Kpler Twitter": "https://keep.md/api/x-rss/Kpler.xml?content=posts",
+    "Defence_IDA Twitter": "https://keep.md/api/x-rss/Defence_IDA.xml?content=posts",
 }
 
 # Stories must contain at least one of these to be included
@@ -121,7 +128,7 @@ def build_html(entries):
         "<p>Updates every 6 hours. Auto-refresh every 5 minutes.</p>",
         "<h2>Latest Entries</h2>",
     ]
-    for e in entries[:60]:
+    for e in entries[:200]:
         lines.append(f'<div class="entry">')
         lines.append(f'<div class="meta"><span class="src">{e["source"]}</span> | {e["time"]}</div>')
         lines.append(f'<div><b>{e["title"]}</b></div>')
