@@ -1,9 +1,9 @@
 name: Update OSINT Feed
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # Once daily at midnight UTC
-  workflow_dispatch:  # Lets you manually trigger it anytime
+    - cron: '30 5,11,17,23 * * *'
 
 permissions:
   contents: write
