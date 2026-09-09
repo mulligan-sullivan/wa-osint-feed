@@ -4,7 +4,6 @@ from urllib.request import urlopen, Request
 from xml.etree import ElementTree as ET
 
 FEEDS = {
-FEEDS = {
     # Original sources
     "Fars News": "https://www.farsnews.ir/rss",
     "IRNA": "https://www.irna.ir/rss",
