@@ -8,24 +8,48 @@ FEEDS = {
     "Fars News English": "https://en.farsnews.ir/rss",
     "Tasnim English": "https://www.tasnimnews.ir/en/rss",
     "Mehr News English": "https://en.mehrnews.com/rss",
-    
+    "Press TV": "https://www.presstv.ir/rss",
+
     # Regional outlets
     "Al Jazeera": "https://www.aljazeera.com/xml/rss/all.xml",
     "Al Arabiya English": "https://english.alarabiya.net/rss",
+    "Al Mayadeen English": "https://www.almayadeen.net/rss",
     "BBC Middle East": "https://feeds.bbci.co.uk/news/world/middle_east/rss.xml",
     "Anadolu Agency": "https://www.aa.com.tr/en/rss/default?cat=live",
     "AP World": "https://rsshub.app/apnews/topics/world-news",
     "Iran International": "https://www.iranintl.com/en/rss",
-    
+
+    # Axis and movement voices
+    "Al-Manar English": "https://almanar.com.lb/rss",
+    "Al-Akhbar English": "https://english.al-akhbar.com/rss",
+    "Al-Masirah": "https://www.almasirah.net/rss",
+    "Saba News English": "https://saba.ye/en/rss",
+    "Rai al-Youm": "https://www.raialyoum.com/?feed=rss2",
+    "Al-Quds Al-Arabi": "http://alquds.co.uk/?feed=rss2",
+
+    # Israeli belligerent claims
+    "Times of Israel": "https://www.timesofisrael.com/feed/",
+    "Jerusalem Post": "https://www.jpost.com/rss",
+
+    # Host-state agencies
+    "SPA Saudi": "https://www.spa.gov.sa/rss_en",
+    "WAM UAE": "https://www.wam.ae/en/rss",
+    "KUNA Kuwait": "https://www.kuna.net.kw/rss",
+
     # Maritime / military / tanker tracking
     "gCaptain Maritime": "https://feeds.feedburner.com/gcaptain",
     "USNI News": "https://news.usni.org/feed",
     "Defence Blog Maritime": "https://defence-blog.com/category/navy/feed",
     "World Maritime News": "https://feeds.feedburner.com/worldmaritimenews",
-    
+    "Seatrade Maritime": "https://www.seatrade-maritime.com/rss.xml",
+
+    # Oil market
+    "Rigzone": "https://www.rigzone.com/news/rss/",
+    "Oilprice.com": "https://oilprice.com/rss/main",
+
     # Seismic for missile impact detection
     "USGS Middle East": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson",
-    
+
     # Twitter/X OSINT feeds via keep.md
     "OSINTdefender Twitter": "https://keep.md/api/x-rss/OSINTdefender.xml?content=posts",
     "UKMTO Twitter": "https://keep.md/api/x-rss/UKMTO.xml?content=posts",
@@ -35,6 +59,8 @@ FEEDS = {
     "TankerTrackers Twitter": "https://keep.md/api/x-rss/TankerTrackers.xml?content=posts",
     "Kpler Twitter": "https://keep.md/api/x-rss/Kpler.xml?content=posts",
     "Defence_IDA Twitter": "https://keep.md/api/x-rss/Defence_IDA.xml?content=posts",
+    "IDF Twitter": "https://keep.md/api/x-rss/idfonline.xml?content=posts",
+    "CENTCOM Twitter": "https://keep.md/api/x-rss/CENTCOM.xml?content=posts",
 }
 
 # Stories must contain at least one of these to be included
@@ -148,7 +174,7 @@ def main():
         xml = fetch_rss(url)
         all_entries.extend(parse_rss(xml, name))
     all_entries.extend(fetch_usgs())
-    
+
     html_out = build_html(all_entries)
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_out)
